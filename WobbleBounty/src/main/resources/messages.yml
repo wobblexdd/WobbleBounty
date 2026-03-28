@@ -1,0 +1,19 @@
+prefix: "<gray>[<gold>WobbleBounty</gold>]</gray> "
+
+only-player: "<red>Only players can use this command.</red>"
+no-permission: "<red>You do not have permission.</red>"
+player-not-found: "<red>Player not found.</red>"
+invalid-amount: "<red>Invalid amount.</red>"
+amount-too-low: "<red>Minimum bounty is <gold>{min}</gold>.</red>"
+not-enough-money: "<red>You do not have enough money.</red>"
+cannot-target-self: "<red>You cannot place a bounty on yourself.</red>"
+
+bounty-placed: "<green>You placed <gold>{amount}</gold> on <yellow>{target}</yellow>.</green>"
+bounty-received: "<green>You claimed <gold>{amount}</gold> for killing <yellow>{target}</yellow>.</green>"
+bounty-check: "<yellow>{target}</yellow> has a bounty of <gold>{amount}</gold>."
+bounty-none: "<yellow>{target}</yellow> has no bounty."
+
+reload-success: "<green>Configuration reloaded.</green>"
+
+broadcast-place: "<yellow>{player}</yellow> placed <gold>{amount}</gold> on <yellow>{target}</yellow>."
+broadcast-claim: "<yellow>{killer}</yellow> claimed <gold>{amount}</gold> for killing <yellow>{target}</yellow>."
