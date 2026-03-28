@@ -21,7 +21,7 @@ public final class BountyRepository {
     }
 
     public Optional<Bounty> findByTarget(UUID targetId) {
-        String sql = "SELECT target_uuid, amount FROM bounties WHERE target_uuid = ?";
+        String sql = "SELECT target_uuid, amount, created_at FROM bounties WHERE target_uuid = ?";
 
         try (PreparedStatement statement = sqliteManager.prepare(sql)) {
             statement.setString(1, targetId.toString());
@@ -33,7 +33,8 @@ public final class BountyRepository {
 
                 UUID uuid = UUID.fromString(resultSet.getString("target_uuid"));
                 double amount = resultSet.getDouble("amount");
-                return Optional.of(new Bounty(uuid, amount));
+                long createdAt = resultSet.getLong("created_at");
+                return Optional.of(new Bounty(uuid, amount, createdAt));
             }
         } catch (SQLException exception) {
             throw new IllegalStateException("Could not find bounty by target", exception);
@@ -42,8 +43,8 @@ public final class BountyRepository {
 
     public void saveOrUpdate(Bounty bounty) {
         String sql = """
-                INSERT INTO bounties (target_uuid, amount)
-                VALUES (?, ?)
+                INSERT INTO bounties (target_uuid, amount, created_at)
+                VALUES (?, ?, ?)
                 ON CONFLICT(target_uuid)
                 DO UPDATE SET amount = excluded.amount
                 """;
@@ -51,6 +52,7 @@ public final class BountyRepository {
         try (PreparedStatement statement = sqliteManager.prepare(sql)) {
             statement.setString(1, bounty.getTargetId().toString());
             statement.setDouble(2, bounty.getAmount());
+            statement.setLong(3, bounty.getCreatedAt());
             statement.executeUpdate();
         } catch (SQLException exception) {
             throw new IllegalStateException("Could not save or update bounty", exception);
@@ -81,8 +83,18 @@ public final class BountyRepository {
         }
     }
 
+    public void deleteAll() {
+        String sql = "DELETE FROM bounties";
+
+        try (PreparedStatement statement = sqliteManager.prepare(sql)) {
+            statement.executeUpdate();
+        } catch (SQLException exception) {
+            throw new IllegalStateException("Could not clear bounties", exception);
+        }
+    }
+
     public List<Bounty> findTop(int limit) {
-        String sql = "SELECT target_uuid, amount FROM bounties ORDER BY amount DESC LIMIT ?";
+        String sql = "SELECT target_uuid, amount, created_at FROM bounties ORDER BY amount DESC LIMIT ?";
         List<Bounty> bounties = new ArrayList<>();
 
         try (PreparedStatement statement = sqliteManager.prepare(sql)) {
@@ -92,7 +104,8 @@ public final class BountyRepository {
                 while (resultSet.next()) {
                     UUID uuid = UUID.fromString(resultSet.getString("target_uuid"));
                     double amount = resultSet.getDouble("amount");
-                    bounties.add(new Bounty(uuid, amount));
+                    long createdAt = resultSet.getLong("created_at");
+                    bounties.add(new Bounty(uuid, amount, createdAt));
                 }
             }
         } catch (SQLException exception) {
@@ -104,7 +117,7 @@ public final class BountyRepository {
     }
 
     public List<Bounty> findAll() {
-        String sql = "SELECT target_uuid, amount FROM bounties";
+        String sql = "SELECT target_uuid, amount, created_at FROM bounties";
         List<Bounty> bounties = new ArrayList<>();
 
         try (PreparedStatement statement = sqliteManager.prepare(sql);
@@ -113,7 +126,8 @@ public final class BountyRepository {
             while (resultSet.next()) {
                 UUID uuid = UUID.fromString(resultSet.getString("target_uuid"));
                 double amount = resultSet.getDouble("amount");
-                bounties.add(new Bounty(uuid, amount));
+                long createdAt = resultSet.getLong("created_at");
+                bounties.add(new Bounty(uuid, amount, createdAt));
             }
         } catch (SQLException exception) {
             throw new IllegalStateException("Could not load all bounties", exception);

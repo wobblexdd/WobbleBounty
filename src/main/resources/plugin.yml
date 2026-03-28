@@ -3,7 +3,7 @@ version: 1.0.0
 main: me.wobble.wobblebounty.WobbleBounty
 api-version: '1.21'
 authors: [Wobble]
-website: https://github.com/mororpm
+website: https://github.com/wobblexdd
 depend: [Vault]
 
 commands:

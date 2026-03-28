@@ -70,6 +70,9 @@ public final class TextStyleUtil {
         return switch (raw.toUpperCase()) {
             case "HIGHEST" -> "Highest First";
             case "LOWEST" -> "Lowest First";
+            case "NEWEST" -> "Newest First";
+            case "OLDEST" -> "Oldest First";
+            case "ALPHABETICAL" -> "Alphabetical";
             default -> raw;
         };
     }

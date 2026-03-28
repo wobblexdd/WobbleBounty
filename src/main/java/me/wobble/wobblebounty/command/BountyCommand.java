@@ -50,7 +50,13 @@ public final class BountyCommand implements CommandExecutor, TabCompleter {
             case "top" -> handleTop(player);
             case "reload" -> handleReload(player);
             case "remove" -> handleRemove(player, args);
-            default -> player.sendMessage(ChatUtil.mm("<red>Unknown subcommand.</red>"));
+            case "set" -> handleSet(player, args);
+            case "info" -> handleInfo(player, args);
+            case "clearall" -> handleClearAll(player);
+            default -> {
+                player.sendMessage(ChatUtil.mm("<red>Unknown subcommand.</red>"));
+                SoundUtil.playError(plugin, player);
+            }
         }
 
         return true;
@@ -230,6 +236,96 @@ public final class BountyCommand implements CommandExecutor, TabCompleter {
         }
     }
 
+    private void handleSet(Player player, String[] args) {
+        if (!player.hasPermission("wobble.bounty.admin")) {
+            player.sendMessage(ChatUtil.message(plugin, "no-permission"));
+            SoundUtil.playError(plugin, player);
+            return;
+        }
+
+        if (args.length < 3) {
+            player.sendMessage(ChatUtil.mm("<red>Usage: /bounty set <player> <amount></red>"));
+            SoundUtil.playError(plugin, player);
+            return;
+        }
+
+        OfflinePlayer target = Bukkit.getOfflinePlayer(args[1]);
+        if (target.getName() == null && !target.hasPlayedBefore() && !target.isOnline()) {
+            player.sendMessage(ChatUtil.message(plugin, "player-not-found"));
+            SoundUtil.playError(plugin, player);
+            return;
+        }
+
+        double amount;
+        try {
+            amount = Double.parseDouble(args[2]);
+        } catch (NumberFormatException exception) {
+            player.sendMessage(ChatUtil.message(plugin, "invalid-amount"));
+            SoundUtil.playError(plugin, player);
+            return;
+        }
+
+        BountyService.SetResult result = bountyService.setBounty(target.getUniqueId(), amount);
+
+        switch (result) {
+            case SUCCESS -> {
+                player.sendMessage(ChatUtil.mm("<green>Set bounty for <yellow>" + target.getName() + "</yellow> to <gold>" + bountyService.format(amount) + "</gold>.</green>"));
+                SoundUtil.playSuccess(plugin, player);
+            }
+            case INVALID_AMOUNT -> {
+                player.sendMessage(ChatUtil.message(plugin, "invalid-amount"));
+                SoundUtil.playError(plugin, player);
+            }
+        }
+    }
+
+    private void handleInfo(Player player, String[] args) {
+        if (!player.hasPermission("wobble.bounty.admin")) {
+            player.sendMessage(ChatUtil.message(plugin, "no-permission"));
+            SoundUtil.playError(plugin, player);
+            return;
+        }
+
+        if (args.length < 2) {
+            player.sendMessage(ChatUtil.mm("<red>Usage: /bounty info <player></red>"));
+            SoundUtil.playError(plugin, player);
+            return;
+        }
+
+        OfflinePlayer target = Bukkit.getOfflinePlayer(args[1]);
+        if (target.getName() == null && !target.hasPlayedBefore() && !target.isOnline()) {
+            player.sendMessage(ChatUtil.message(plugin, "player-not-found"));
+            SoundUtil.playError(plugin, player);
+            return;
+        }
+
+        Optional<Bounty> optional = bountyService.getBounty(target.getUniqueId());
+        if (optional.isEmpty()) {
+            player.sendMessage(ChatUtil.mm("<red>No bounty found for <yellow>" + target.getName() + "</yellow>.</red>"));
+            SoundUtil.playError(plugin, player);
+            return;
+        }
+
+        Bounty bounty = optional.get();
+        player.sendMessage(ChatUtil.mm("<dark_gray>— <gold>Admin Bounty Info</gold> <dark_gray>—"));
+        player.sendMessage(ChatUtil.mm("<gray>Target:</gray> <yellow>" + target.getName() + "</yellow>"));
+        player.sendMessage(ChatUtil.mm("<gray>Amount:</gray> <gold>" + bountyService.format(bounty.getAmount()) + "</gold>"));
+        player.sendMessage(ChatUtil.mm("<gray>Created:</gray> <yellow>" + bounty.getCreatedAt() + "</yellow>"));
+        SoundUtil.playSuccess(plugin, player);
+    }
+
+    private void handleClearAll(Player player) {
+        if (!player.hasPermission("wobble.bounty.admin")) {
+            player.sendMessage(ChatUtil.message(plugin, "no-permission"));
+            SoundUtil.playError(plugin, player);
+            return;
+        }
+
+        int removed = bountyService.clearAllBounties();
+        player.sendMessage(ChatUtil.mm("<green>Cleared <gold>" + removed + "</gold> active bounties.</green>"));
+        SoundUtil.playSuccess(plugin, player);
+    }
+
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         List<String> suggestions = new ArrayList<>();
@@ -240,6 +336,9 @@ public final class BountyCommand implements CommandExecutor, TabCompleter {
             suggestions.add("top");
             suggestions.add("reload");
             suggestions.add("remove");
+            suggestions.add("set");
+            suggestions.add("info");
+            suggestions.add("clearall");
             return filter(suggestions, args[0]);
         }
 
@@ -247,6 +346,8 @@ public final class BountyCommand implements CommandExecutor, TabCompleter {
                 args[0].equalsIgnoreCase("place")
                         || args[0].equalsIgnoreCase("check")
                         || args[0].equalsIgnoreCase("remove")
+                        || args[0].equalsIgnoreCase("set")
+                        || args[0].equalsIgnoreCase("info")
         )) {
             for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
                 suggestions.add(onlinePlayer.getName());

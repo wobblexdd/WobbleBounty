@@ -17,6 +17,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
@@ -51,7 +52,7 @@ public final class BountyGUI {
         String title = plugin.getConfig().getString("gui.title", "<dark_gray>ʙᴏᴜɴᴛʏ");
         int size = plugin.getConfig().getInt("gui.size", 54);
 
-        List<Bounty> allBounties = filterBounties(bountyService.getAllBounties(sortType), searchQuery);
+        List<Bounty> allBounties = prepareBounties(sortType, searchQuery);
         int pageSize = getPageSize();
         int maxPage = pagination.maxPage(allBounties, pageSize);
 
@@ -92,22 +93,21 @@ public final class BountyGUI {
             Bounty bounty = pageBounties.get(i);
 
             OfflinePlayer target = Bukkit.getOfflinePlayer(bounty.getTargetId());
-            String name = target.getName() == null ? "Unknown" : target.getName();
+            String name = displayName(target);
 
             List<Component> lore = new ArrayList<>();
             lore.add(ChatUtil.mm(TextStyleUtil.normalLabel("Target", name)));
             lore.add(ChatUtil.mm("<gray>Bounty:</gray> <gold>" + bountyService.format(bounty.getAmount()) + "</gold>"));
+            lore.add(ChatUtil.mm("<gray>Created:</gray> <yellow>" + relativeTime(bounty.getCreatedAt()) + "</yellow>"));
             lore.add(ChatUtil.mm("<dark_gray>—"));
-            lore.add(ChatUtil.mm(TextStyleUtil.hint("click for quick info")));
-            lore.add(ChatUtil.mm(TextStyleUtil.hint("left click to inspect target")));
-            lore.add(ChatUtil.mm("<gray>Use:</gray> <gold>/bounty check " + name + "</gold>"));
+            lore.add(ChatUtil.mm(TextStyleUtil.hint("click to open confirm menu")));
 
             ItemStack head = new ItemStack(Material.PLAYER_HEAD);
             SkullMeta meta = (SkullMeta) head.getItemMeta();
             meta.displayName(ChatUtil.mm("<gold>" + name + "</gold>"));
             meta.lore(lore);
             meta.setOwningPlayer(target);
-            meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+            meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ADDITIONAL_TOOLTIP);
             head.setItemMeta(meta);
 
             inventory.setItem(CONTENT_SLOTS[i], head);
@@ -122,15 +122,15 @@ public final class BountyGUI {
     }
 
     public int getResultCount(BountyService.SortType sortType, String searchQuery) {
-        return filterBounties(bountyService.getAllBounties(sortType), searchQuery).size();
+        return prepareBounties(sortType, searchQuery).size();
     }
 
     public int getMaxPage(BountyService.SortType sortType, String searchQuery) {
-        return pagination.maxPage(filterBounties(bountyService.getAllBounties(sortType), searchQuery), getPageSize());
+        return pagination.maxPage(prepareBounties(sortType, searchQuery), getPageSize());
     }
 
     public Bounty getBountyBySlot(int slot, int page, BountyService.SortType sortType, String searchQuery) {
-        List<Bounty> allBounties = filterBounties(bountyService.getAllBounties(sortType), searchQuery);
+        List<Bounty> allBounties = prepareBounties(sortType, searchQuery);
         List<Bounty> pageBounties = pagination.page(allBounties, page, getPageSize());
 
         for (int i = 0; i < CONTENT_SLOTS.length && i < pageBounties.size(); i++) {
@@ -142,24 +142,33 @@ public final class BountyGUI {
         return null;
     }
 
-    private List<Bounty> filterBounties(List<Bounty> source, String searchQuery) {
-        if (searchQuery == null || searchQuery.isBlank()) {
-            return source;
+    private List<Bounty> prepareBounties(BountyService.SortType sortType, String searchQuery) {
+        List<Bounty> source = new ArrayList<>(bountyService.getAllBounties());
+
+        if (searchQuery != null && !searchQuery.isBlank()) {
+            String query = searchQuery.toLowerCase(Locale.ROOT);
+
+            source.removeIf(bounty -> {
+                String name = displayName(Bukkit.getOfflinePlayer(bounty.getTargetId())).toLowerCase(Locale.ROOT);
+                return !name.contains(query);
+            });
+
+            source.sort(Comparator.comparingInt((Bounty bounty) -> {
+                String name = displayName(Bukkit.getOfflinePlayer(bounty.getTargetId())).toLowerCase(Locale.ROOT);
+                return name.equals(query) ? 0 : 1;
+            }));
         }
 
-        String query = searchQuery.toLowerCase(Locale.ROOT);
-        List<Bounty> filtered = new ArrayList<>();
-
-        for (Bounty bounty : source) {
-            OfflinePlayer target = Bukkit.getOfflinePlayer(bounty.getTargetId());
-            String name = target.getName();
-
-            if (name != null && name.toLowerCase(Locale.ROOT).contains(query)) {
-                filtered.add(bounty);
-            }
+        switch (sortType) {
+            case HIGHEST -> source.sort(Comparator.comparingDouble(Bounty::getAmount).reversed());
+            case LOWEST -> source.sort(Comparator.comparingDouble(Bounty::getAmount));
+            case NEWEST -> source.sort(Comparator.comparingLong(Bounty::getCreatedAt).reversed());
+            case OLDEST -> source.sort(Comparator.comparingLong(Bounty::getCreatedAt));
+            case ALPHABETICAL -> source.sort(Comparator.comparing(bounty ->
+                    displayName(Bukkit.getOfflinePlayer(bounty.getTargetId())).toLowerCase(Locale.ROOT)));
         }
 
-        return filtered;
+        return source;
     }
 
     private void fillBackground(Inventory inventory) {
@@ -216,9 +225,7 @@ public final class BountyGUI {
         inventory.setItem(closeSlot, simpleItem(
                 Material.BARRIER,
                 "<red>" + TextStyleUtil.smallCaps("Close"),
-                List.of(
-                        ChatUtil.mm(TextStyleUtil.hint("click to close the menu"))
-                ),
+                List.of(ChatUtil.mm(TextStyleUtil.hint("click to close the menu"))),
                 true
         ));
 
@@ -242,8 +249,9 @@ public final class BountyGUI {
                 "<gold>" + TextStyleUtil.smallCaps("Sort"),
                 List.of(
                         ChatUtil.mm("<gray>Current:</gray> <yellow>" + TextStyleUtil.sortDisplay(sortType.name()) + "</yellow>"),
+                        ChatUtil.mm("<gray>Modes:</gray> <yellow>5</yellow>"),
                         ChatUtil.mm("<dark_gray>—"),
-                        ChatUtil.mm(TextStyleUtil.hint("click to toggle sort order"))
+                        ChatUtil.mm(TextStyleUtil.hint("click to cycle sort mode"))
                 ),
                 true
         ));
@@ -256,7 +264,7 @@ public final class BountyGUI {
                         ChatUtil.mm("<gray>Results:</gray> <gold>" + totalEntries + "</gold>"),
                         ChatUtil.mm("<dark_gray>—"),
                         ChatUtil.mm(TextStyleUtil.hint("click to search by player name")),
-                        ChatUtil.mm(TextStyleUtil.hint("shift click to clear search"))
+                        ChatUtil.mm(TextStyleUtil.hint("exact matches appear first"))
                 ),
                 true
         ));
@@ -267,7 +275,7 @@ public final class BountyGUI {
                 List.of(
                         ChatUtil.mm("<gray>Search:</gray> <yellow>" + TextStyleUtil.displaySearch(searchQuery) + "</yellow>"),
                         ChatUtil.mm("<dark_gray>—"),
-                        ChatUtil.mm(TextStyleUtil.hint("click to reset current search"))
+                        ChatUtil.mm(TextStyleUtil.hint("click to clear current search"))
                 ),
                 true
         ));
@@ -279,12 +287,35 @@ public final class BountyGUI {
         meta.displayName(ChatUtil.mm(name));
         meta.lore(lore);
         if (hideFlags) {
-            meta.addItemFlags(
-                    ItemFlag.HIDE_ATTRIBUTES,
-                    ItemFlag.HIDE_ADDITIONAL_TOOLTIP
-            );
+            meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ADDITIONAL_TOOLTIP);
         }
         item.setItemMeta(meta);
         return item;
+    }
+
+    private String displayName(OfflinePlayer player) {
+        return player.getName() == null ? "Unknown" : player.getName();
+    }
+
+    private String relativeTime(long millis) {
+        if (millis <= 0L) {
+            return "Unknown";
+        }
+
+        long diffSeconds = Math.max(0L, (System.currentTimeMillis() - millis) / 1000L);
+        long minutes = diffSeconds / 60L;
+        long hours = minutes / 60L;
+        long days = hours / 24L;
+
+        if (days > 0) {
+            return days + "d ago";
+        }
+        if (hours > 0) {
+            return hours + "h ago";
+        }
+        if (minutes > 0) {
+            return minutes + "m ago";
+        }
+        return diffSeconds + "s ago";
     }
 }

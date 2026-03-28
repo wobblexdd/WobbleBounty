@@ -4,6 +4,7 @@ import me.wobble.wobblebounty.command.BountyCommand;
 import me.wobble.wobblebounty.database.SQLiteManager;
 import me.wobble.wobblebounty.economy.EconomyProvider;
 import me.wobble.wobblebounty.listener.BountyMenuListener;
+import me.wobble.wobblebounty.listener.InventorySafetyListener;
 import me.wobble.wobblebounty.listener.PlayerKillListener;
 import me.wobble.wobblebounty.listener.PlayerSearchListener;
 import me.wobble.wobblebounty.repository.BountyRepository;
@@ -60,6 +61,7 @@ public final class WobbleBounty extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerKillListener(this, bountyService), this);
         getServer().getPluginManager().registerEvents(bountyMenuListener, this);
         getServer().getPluginManager().registerEvents(new PlayerSearchListener(this, bountyMenuListener), this);
+        getServer().getPluginManager().registerEvents(new InventorySafetyListener(), this);
 
         getLogger().info("WobbleBounty enabled.");
     }

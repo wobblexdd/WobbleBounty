@@ -6,6 +6,7 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -38,7 +39,8 @@ public final class SQLiteManager {
         String createBounties = """
                 CREATE TABLE IF NOT EXISTS bounties (
                     target_uuid TEXT PRIMARY KEY,
-                    amount REAL NOT NULL
+                    amount REAL NOT NULL,
+                    created_at INTEGER NOT NULL DEFAULT 0
                 );
                 """;
 
@@ -57,6 +59,42 @@ public final class SQLiteManager {
         } catch (SQLException exception) {
             throw new IllegalStateException("Could not create tables", exception);
         }
+
+        ensureColumnExists("bounties", "created_at", "INTEGER NOT NULL DEFAULT 0");
+    }
+
+    private void ensureColumnExists(String tableName, String columnName, String columnDefinition) {
+        if (hasColumn(tableName, columnName)) {
+            return;
+        }
+
+        String sql = "ALTER TABLE " + tableName + " ADD COLUMN " + columnName + " " + columnDefinition;
+
+        try (Statement statement = connection.createStatement()) {
+            statement.executeUpdate(sql);
+            plugin.getLogger().info("Added missing column " + columnName + " to " + tableName + ".");
+        } catch (SQLException exception) {
+            throw new IllegalStateException("Could not add missing column " + columnName + " to " + tableName, exception);
+        }
+    }
+
+    private boolean hasColumn(String tableName, String columnName) {
+        String sql = "PRAGMA table_info(" + tableName + ")";
+
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(sql)) {
+
+            while (resultSet.next()) {
+                String existing = resultSet.getString("name");
+                if (columnName.equalsIgnoreCase(existing)) {
+                    return true;
+                }
+            }
+        } catch (SQLException exception) {
+            throw new IllegalStateException("Could not inspect table structure for " + tableName, exception);
+        }
+
+        return false;
     }
 
     public Connection getConnection() {

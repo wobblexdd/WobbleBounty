@@ -3,6 +3,7 @@ package me.wobble.wobblebounty.listener;
 import me.wobble.wobblebounty.WobbleBounty;
 import me.wobble.wobblebounty.service.BountyService;
 import me.wobble.wobblebounty.util.ChatUtil;
+import me.wobble.wobblebounty.util.SoundUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -39,6 +40,7 @@ public final class PlayerKillListener implements Listener {
                 "{amount}", bountyService.format(claimed),
                 "{target}", victim.getName()
         ));
+        SoundUtil.playSuccess(plugin, killer);
 
         if (plugin.getConfig().getBoolean("bounty.broadcast-on-claim", true)) {
             Bukkit.broadcast(ChatUtil.message(

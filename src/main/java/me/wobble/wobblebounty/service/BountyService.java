@@ -9,7 +9,6 @@ import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -18,7 +17,10 @@ public final class BountyService {
 
     public enum SortType {
         HIGHEST,
-        LOWEST
+        LOWEST,
+        NEWEST,
+        OLDEST,
+        ALPHABETICAL
     }
 
     public enum PlaceResult {
@@ -32,6 +34,11 @@ public final class BountyService {
     public enum RemoveResult {
         SUCCESS,
         NOT_FOUND
+    }
+
+    public enum SetResult {
+        SUCCESS,
+        INVALID_AMOUNT
     }
 
     private final WobbleBounty plugin;
@@ -72,18 +79,6 @@ public final class BountyService {
         return repository.findAll();
     }
 
-    public List<Bounty> getAllBounties(SortType sortType) {
-        List<Bounty> list = repository.findAll();
-
-        if (sortType == SortType.LOWEST) {
-            list.sort(Comparator.comparingDouble(Bounty::getAmount));
-        } else {
-            list.sort(Comparator.comparingDouble(Bounty::getAmount).reversed());
-        }
-
-        return list;
-    }
-
     public PlaceResult placeBounty(Player placer, OfflinePlayer target, double amount) {
         if (amount <= 0) {
             return PlaceResult.INVALID_AMOUNT;
@@ -110,7 +105,11 @@ public final class BountyService {
         }
 
         Bounty bounty = repository.findByTarget(target.getUniqueId())
-                .orElseGet(() -> new Bounty(target.getUniqueId(), 0.0));
+                .orElseGet(() -> new Bounty(target.getUniqueId(), 0.0, System.currentTimeMillis()));
+
+        if (bounty.getCreatedAt() <= 0L) {
+            bounty.setCreatedAt(System.currentTimeMillis());
+        }
 
         bounty.addAmount(amount);
         repository.saveOrUpdate(bounty);
@@ -149,5 +148,30 @@ public final class BountyService {
 
         repository.delete(targetId);
         return RemoveResult.SUCCESS;
+    }
+
+    public SetResult setBounty(UUID targetId, double amount) {
+        if (amount < 0) {
+            return SetResult.INVALID_AMOUNT;
+        }
+
+        if (amount == 0.0) {
+            repository.delete(targetId);
+            return SetResult.SUCCESS;
+        }
+
+        long createdAt = repository.findByTarget(targetId)
+                .map(Bounty::getCreatedAt)
+                .filter(value -> value > 0L)
+                .orElse(System.currentTimeMillis());
+
+        repository.saveOrUpdate(new Bounty(targetId, amount, createdAt));
+        return SetResult.SUCCESS;
+    }
+
+    public int clearAllBounties() {
+        int count = repository.findAll().size();
+        repository.deleteAll();
+        return count;
     }
 }
