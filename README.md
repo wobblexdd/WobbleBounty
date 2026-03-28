@@ -5,86 +5,99 @@
 ![Vault](https://img.shields.io/badge/Vault-Economy-blue?style=for-the-badge)
 ![SQLite](https://img.shields.io/badge/SQLite-Embedded-003B57?style=for-the-badge&logo=sqlite)
 
-A modern, production-ready **bounty system plugin** for Minecraft servers running **Paper 1.21+**.
+A production-ready **bounty system plugin** for Minecraft servers running **Paper 1.21+**.
 
-WobbleBounty provides a complete PvP bounty system with a clean GUI, efficient SQLite storage, Vault economy support, and a polished user experience.
+WobbleBounty delivers a complete PvP bounty experience with a polished GUI, advanced filtering, admin tools, and a reliable SQLite backend.
 
 ---
 
 ## ✨ Features
 
-### 🎯 Core Bounty System
+### 🎯 Core System
 - Place bounties on players
 - Stackable rewards (multiple contributors per target)
 - Automatic payout on kill
-- Optional removal of bounty after kill
-- Configurable minimum bounty amount
+- Optional removal after kill
+- Configurable minimum bounty and tax system
 
 ---
 
-### 💰 Economy Integration (Vault)
-- Full support for **Vault**
-- Compatible with EssentialsX, CMI, and other economy plugins
-- Configurable tax system
-- Balance validation before placing bounty
+### 💰 Economy (Vault)
+- Full Vault integration
+- Compatible with EssentialsX, CMI, and similar plugins
+- Tax handling on bounty placement
+- Balance validation before transactions
 
 ---
 
 ### 🖥️ GUI System
-- Clean, modern GUI (54 slots)
-- Pagination support
-- Sorting system:
-  - Highest bounty first
-  - Lowest bounty first
-- Player search (chat-based input)
-- Reset filter button
-- Smooth navigation with sound feedback
+- 54-slot modern GUI
+- Pagination system
+- Confirm GUI for actions
+- Integrated search and filtering
+- Real-time updates
+
+---
+
+### 🔎 Search & Filtering
+- Chat-based search input
+- Partial name matching
+- Exact match priority
+- Result counter in GUI
+- Reset filter system
+
+---
+
+### 📊 Sorting Modes
+- Highest First
+- Lowest First
+- Newest First
+- Oldest First
+- Alphabetical
 
 ---
 
 ### 🎨 UI / UX
 - Small caps styled interface
-- Minimalistic design
-- Hover hints and clean lore
-- Compact number formatting:
-  - `1,000 → 1K`
-  - `1,000,000 → 1M`
-  - `1,000,000,000 → 1B`
-
----
-
-### 🔎 Search System
-- Click search button in GUI
-- Type player name in chat
-- Supports partial matching
-- Instant filtered results
-- Shift-click or reset button to clear
-
----
-
-### 📊 Sorting System
-- Toggle sorting with one click
-- Visual feedback in GUI
-- Works together with pagination and search
+- Clean layout and spacing
+- Hover hints and structured lore
+- Consistent visual system (aligned with WobbleAuction)
 
 ---
 
 ### 🔊 Sound System
-- Configurable sounds:
-  - Click
-  - Success
-  - Error
-- Toggle enabled/disabled
-- Fully customizable
+- Click / success / error sounds
+- Fully configurable
+- Toggle support
+
+---
+
+### 🛠️ Admin Features
+- `/bounty set <player> <amount>`
+- `/bounty remove <player>`
+- `/bounty info <player>`
+- `/bounty clearall`
+- Admin actions available via GUI
+
+---
+
+### 🛡️ Inventory Safety
+- Blocks:
+  - Shift-click
+  - Drag
+  - Hotbar swap
+  - Double click
+- Prevents GUI abuse and item movement
 
 ---
 
 ### 💾 Database (SQLite)
-- Embedded SQLite (no setup required)
-- Automatic table creation
+- Embedded database (no setup required)
+- Automatic schema creation
 - Stores:
   - Active bounties
   - Contributions
+  - Creation timestamps
 - Fast and lightweight
 
 ---
@@ -97,8 +110,11 @@ WobbleBounty provides a complete PvP bounty system with a clean GUI, efficient S
 | `/bounty place <player> <amount>` | Place a bounty |
 | `/bounty check <player>` | Check bounty |
 | `/bounty top` | Show top bounties |
+| `/bounty set <player> <amount>` | Set bounty (admin) |
 | `/bounty remove <player>` | Remove bounty (admin) |
-| `/bounty reload` | Reload config |
+| `/bounty info <player>` | View bounty details (admin) |
+| `/bounty clearall` | Clear all bounties (admin) |
+| `/bounty reload` | Reload configuration |
 
 ---
 
@@ -122,7 +138,7 @@ WobbleBounty provides a complete PvP bounty system with a clean GUI, efficient S
 
 ---
 
-## 📁 Configuration (config.yml)
+## 📁 Configuration
 
 ```yml
 bounty:
@@ -130,71 +146,60 @@ bounty:
   tax-percent: 5.0
   allow-self-bounty: false
   remove-bounty-on-kill: true
-```
+  broadcast-on-place: true
+  broadcast-on-claim: true
 
----
-
-## 🔊 Sounds (config.yml)
-
-```yml
 sounds:
   enabled: true
   success: ENTITY_EXPERIENCE_ORB_PICKUP
   error: ENTITY_VILLAGER_NO
   click: UI_BUTTON_CLICK
 ```
-
 ---
 
 ## 🧱 Requirements
 
-- Paper 1.21+
-- Java 21
-- Vault
-- Economy plugin
+* Paper 1.21+
+* Java 21
+* Vault
+* Economy plugin
 
 ---
 
 ## 🚀 Performance
 
-- Lightweight SQLite backend
-- Optimized GUI rendering
-- Minimal memory footprint
-- Designed for survival and economy servers
+* Lightweight SQLite backend
+* Optimized GUI updates
+* Minimal memory usage
+* Suitable for survival and economy servers
 
 ---
 
 ## 🧩 Architecture
 
-The plugin follows a clean structure:
+* Service Layer → `BountyService`
+* Repository Layer → `BountyRepository`
+* Database → `SQLiteManager`
+* GUI → `BountyGUI`, `BountyConfirmGUI`, `Pagination`
+* Listeners:
 
-- Service Layer → `BountyService`
-- Repository Layer → `BountyRepository`
-- Database → `SQLiteManager`
-- GUI → `BountyGUI + Pagination`
-- Listeners:
-  - Player kill handling
-  - GUI interactions
-  - Chat search system
+  * PlayerKillListener
+  * BountyMenuListener
+  * PlayerSearchListener
+  * InventorySafetyListener
 
 ---
 
 ## 📌 Roadmap
 
-- MongoDB support
-- Cross-server sync
-- API for external plugins
-- WobbleAuction integration
+* MongoDB support
+* Cross-server sync
+* Public API for integrations
+* Full integration with WobbleAuction ecosystem
 
 ---
 
 ## 👨‍💻 Author
 
-**Wobble**  
+**Wobble**
 GitHub: https://github.com/wobblexdd
-
----
-
-## 📜 License
-
-MIT License
