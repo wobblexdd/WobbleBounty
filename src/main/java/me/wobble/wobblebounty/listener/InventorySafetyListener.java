@@ -30,7 +30,6 @@ public final class InventorySafetyListener implements Listener {
                 || click == ClickType.NUMBER_KEY
                 || click == ClickType.DOUBLE_CLICK
                 || action == InventoryAction.COLLECT_TO_CURSOR
-                || action == InventoryAction.HOTBAR_MOVE_AND_READD
                 || action == InventoryAction.HOTBAR_SWAP
                 || action == InventoryAction.MOVE_TO_OTHER_INVENTORY) {
             event.setCancelled(true);
@@ -38,7 +37,8 @@ public final class InventorySafetyListener implements Listener {
     }
 
     private boolean isProtectedTitle(net.kyori.adventure.text.Component title) {
-        return title.equals(ChatUtil.mm("<dark_gray>ʙᴏᴜɴᴛʏ"))
-                || title.equals(ChatUtil.mm("<dark_gray>ʙᴏᴜɴᴛʏ ᴄᴏɴꜰɪʀᴍ"));
+        return title != null
+                && (title.equals(ChatUtil.mm("<dark_gray>ʙᴏᴜɴᴛʏ"))
+                || title.equals(ChatUtil.mm("<dark_gray>ʙᴏᴜɴᴛʏ ᴄᴏɴꜰɪʀᴍ")));
     }
 }

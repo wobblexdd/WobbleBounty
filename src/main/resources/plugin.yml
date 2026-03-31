@@ -1,29 +1,26 @@
-name: WobbleAuction
+name: WobbleBounty
 version: 1.0.0
-main: me.wobble.wobbleauction.WobbleAuction
+main: me.wobble.wobblebounty.WobbleBounty
 api-version: '1.21'
 authors: [Wobble]
+website: https://github.com/wobblexdd
 depend: [Vault]
 
 commands:
-  ah:
-    description: Main auction command
-    usage: /ah
-    aliases: [auction]
+  bounty:
+    description: Main bounty command
+    usage: /bounty
+    aliases: [wbounty]
 
 permissions:
-  wobble.auction.admin:
-    description: Full admin access to WobbleAuction
+  wobble.bounty.admin:
+    description: Full admin access to WobbleBounty
     default: op
 
-  wobble.auction.reload:
-    description: Reload WobbleAuction configuration
+  wobble.bounty.reload:
+    description: Reload WobbleBounty configuration
     default: op
 
-  wobble.auction.limit.default:
-    description: Default auction listing limit
-    default: true
-
-  wobble.auction.limit.vip:
-    description: VIP auction listing limit
+  wobble.bounty.bypass:
+    description: Reserved bypass permission
     default: false

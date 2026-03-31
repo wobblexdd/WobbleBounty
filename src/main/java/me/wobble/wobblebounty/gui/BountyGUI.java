@@ -93,7 +93,7 @@ public final class BountyGUI {
             Bounty bounty = pageBounties.get(i);
 
             OfflinePlayer target = Bukkit.getOfflinePlayer(bounty.getTargetId());
-            String name = displayName(target);
+            String name = bounty.getTargetName() == null || bounty.getTargetName().isBlank() ? displayName(target) : bounty.getTargetName();
 
             List<Component> lore = new ArrayList<>();
             lore.add(ChatUtil.mm(TextStyleUtil.normalLabel("Target", name)));
@@ -149,12 +149,14 @@ public final class BountyGUI {
             String query = searchQuery.toLowerCase(Locale.ROOT);
 
             source.removeIf(bounty -> {
-                String name = displayName(Bukkit.getOfflinePlayer(bounty.getTargetId())).toLowerCase(Locale.ROOT);
+                String baseName = bounty.getTargetName() == null || bounty.getTargetName().isBlank() ? displayName(Bukkit.getOfflinePlayer(bounty.getTargetId())) : bounty.getTargetName();
+                String name = baseName.toLowerCase(Locale.ROOT);
                 return !name.contains(query);
             });
 
             source.sort(Comparator.comparingInt((Bounty bounty) -> {
-                String name = displayName(Bukkit.getOfflinePlayer(bounty.getTargetId())).toLowerCase(Locale.ROOT);
+                String baseName = bounty.getTargetName() == null || bounty.getTargetName().isBlank() ? displayName(Bukkit.getOfflinePlayer(bounty.getTargetId())) : bounty.getTargetName();
+                String name = baseName.toLowerCase(Locale.ROOT);
                 return name.equals(query) ? 0 : 1;
             }));
         }
@@ -165,7 +167,7 @@ public final class BountyGUI {
             case NEWEST -> source.sort(Comparator.comparingLong(Bounty::getCreatedAt).reversed());
             case OLDEST -> source.sort(Comparator.comparingLong(Bounty::getCreatedAt));
             case ALPHABETICAL -> source.sort(Comparator.comparing(bounty ->
-                    displayName(Bukkit.getOfflinePlayer(bounty.getTargetId())).toLowerCase(Locale.ROOT)));
+                    ((bounty.getTargetName() == null || bounty.getTargetName().isBlank()) ? displayName(Bukkit.getOfflinePlayer(bounty.getTargetId())) : bounty.getTargetName()).toLowerCase(Locale.ROOT)));
         }
 
         return source;

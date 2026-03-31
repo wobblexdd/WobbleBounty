@@ -105,10 +105,14 @@ public final class BountyService {
         }
 
         Bounty bounty = repository.findByTarget(target.getUniqueId())
-                .orElseGet(() -> new Bounty(target.getUniqueId(), 0.0, System.currentTimeMillis()));
+                .orElseGet(() -> new Bounty(target.getUniqueId(), target.getName() == null ? "Unknown" : target.getName(), 0.0, System.currentTimeMillis()));
 
         if (bounty.getCreatedAt() <= 0L) {
             bounty.setCreatedAt(System.currentTimeMillis());
+        }
+
+        if (target.getName() != null && !target.getName().isBlank()) {
+            bounty.setTargetName(target.getName());
         }
 
         bounty.addAmount(amount);
@@ -165,7 +169,7 @@ public final class BountyService {
                 .filter(value -> value > 0L)
                 .orElse(System.currentTimeMillis());
 
-        repository.saveOrUpdate(new Bounty(targetId, amount, createdAt));
+        repository.saveOrUpdate(new Bounty(targetId, "Unknown", amount, createdAt));
         return SetResult.SUCCESS;
     }
 
