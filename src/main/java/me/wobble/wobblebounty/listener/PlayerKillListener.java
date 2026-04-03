@@ -63,10 +63,15 @@ public final class PlayerKillListener implements Listener {
             return false;
         }
 
-        long cooldownSeconds = plugin.getConfig().getLong("anti-farm.same-killer-target-cooldown-seconds", 300L);
+        long cooldownSeconds = plugin.getConfig().getLong(
+                "anti-farm.same-killer-target-cooldown-seconds",
+                plugin.getConfig().getLong("bounty.kill-cooldown-seconds", 300L)
+        );
         long now = System.currentTimeMillis();
         String key = killerId + ":" + victimId;
         Long last = antiFarm.get(key);
+
+        antiFarm.entrySet().removeIf(entry -> now - entry.getValue() >= cooldownSeconds * 1000L);
 
         if (last != null && now - last < cooldownSeconds * 1000L) {
             return true;

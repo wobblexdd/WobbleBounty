@@ -33,11 +33,14 @@ public final class BountyConfirmGUI {
     }
 
     public void open(Player player, Bounty bounty) {
-        Inventory inventory = Bukkit.createInventory(null, 54, ChatUtil.mm("<dark_gray>ʙᴏᴜɴᴛʏ ᴄᴏɴꜰɪʀᴍ"));
+        Inventory inventory = ManagedGui.createInventory(ManagedGui.Type.BOUNTY_CONFIRM, 54, ChatUtil.mm("<dark_gray>ʙᴏᴜɴᴛʏ ᴄᴏɴꜰɪʀᴍ"));
         fillBackground(inventory);
 
         OfflinePlayer target = Bukkit.getOfflinePlayer(bounty.getTargetId());
-        String name = target.getName() == null ? "Unknown" : target.getName();
+        String storedName = bounty.getTargetName();
+        String name = storedName != null && !storedName.isBlank()
+                ? storedName
+                : (target.getName() == null ? "Unknown" : target.getName());
 
         ItemStack head = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta skullMeta = (SkullMeta) head.getItemMeta();
@@ -46,7 +49,7 @@ public final class BountyConfirmGUI {
         skullMeta.lore(List.of(
                 ChatUtil.mm("<gray>Target:</gray> <yellow>" + name + "</yellow>"),
                 ChatUtil.mm("<gray>Current bounty:</gray> <gold>" + plugin.getBountyService().format(bounty.getAmount()) + "</gold>"),
-                ChatUtil.mm("<dark_gray>—"),
+                ChatUtil.mm("<dark_gray>-"),
                 ChatUtil.mm(TextStyleUtil.hint("choose an action below"))
         ));
         skullMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ADDITIONAL_TOOLTIP);
@@ -70,7 +73,7 @@ public final class BountyConfirmGUI {
                 "<green>" + TextStyleUtil.smallCaps("Place Bounty"),
                 List.of(
                         ChatUtil.mm("<gray>Target:</gray> <yellow>" + name + "</yellow>"),
-                        ChatUtil.mm("<dark_gray>—"),
+                        ChatUtil.mm("<dark_gray>-"),
                         ChatUtil.mm(TextStyleUtil.hint("click to enter amount in chat"))
                 )
         ));
@@ -81,7 +84,7 @@ public final class BountyConfirmGUI {
                 List.of(
                         ChatUtil.mm("<gray>Target:</gray> <yellow>" + name + "</yellow>"),
                         ChatUtil.mm("<gray>Bounty:</gray> <gold>" + plugin.getBountyService().format(bounty.getAmount()) + "</gold>"),
-                        ChatUtil.mm("<dark_gray>—"),
+                        ChatUtil.mm("<dark_gray>-"),
                         ChatUtil.mm(TextStyleUtil.hint("click to view info in chat"))
                 )
         ));
@@ -92,7 +95,7 @@ public final class BountyConfirmGUI {
                     "<gold>" + TextStyleUtil.smallCaps("Set Bounty"),
                     List.of(
                             ChatUtil.mm("<gray>Target:</gray> <yellow>" + name + "</yellow>"),
-                            ChatUtil.mm("<dark_gray>—"),
+                            ChatUtil.mm("<dark_gray>-"),
                             ChatUtil.mm(TextStyleUtil.hint("click to enter new amount in chat"))
                     )
             ));
@@ -102,7 +105,7 @@ public final class BountyConfirmGUI {
                     "<red>" + TextStyleUtil.smallCaps("Remove Bounty"),
                     List.of(
                             ChatUtil.mm("<gray>Target:</gray> <yellow>" + name + "</yellow>"),
-                            ChatUtil.mm("<dark_gray>—"),
+                            ChatUtil.mm("<dark_gray>-"),
                             ChatUtil.mm(TextStyleUtil.hint("click to remove this bounty"))
                     )
             ));

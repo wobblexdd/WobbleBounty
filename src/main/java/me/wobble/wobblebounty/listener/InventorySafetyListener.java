@@ -1,6 +1,6 @@
 package me.wobble.wobblebounty.listener;
 
-import me.wobble.wobblebounty.util.ChatUtil;
+import me.wobble.wobblebounty.gui.ManagedGui;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
@@ -12,14 +12,14 @@ public final class InventorySafetyListener implements Listener {
 
     @EventHandler
     public void onDrag(InventoryDragEvent event) {
-        if (isProtectedTitle(event.getView().title())) {
+        if (ManagedGui.isManaged(event.getView())) {
             event.setCancelled(true);
         }
     }
 
     @EventHandler
     public void onUnsafeClick(InventoryClickEvent event) {
-        if (!isProtectedTitle(event.getView().title())) {
+        if (!ManagedGui.isManaged(event.getView())) {
             return;
         }
 
@@ -34,11 +34,5 @@ public final class InventorySafetyListener implements Listener {
                 || action == InventoryAction.MOVE_TO_OTHER_INVENTORY) {
             event.setCancelled(true);
         }
-    }
-
-    private boolean isProtectedTitle(net.kyori.adventure.text.Component title) {
-        return title != null
-                && (title.equals(ChatUtil.mm("<dark_gray>ʙᴏᴜɴᴛʏ"))
-                || title.equals(ChatUtil.mm("<dark_gray>ʙᴏᴜɴᴛʏ ᴄᴏɴꜰɪʀᴍ")));
     }
 }

@@ -3,6 +3,7 @@ package me.wobble.wobblebounty.listener;
 import me.wobble.wobblebounty.WobbleBounty;
 import me.wobble.wobblebounty.gui.BountyConfirmGUI;
 import me.wobble.wobblebounty.gui.BountyGUI;
+import me.wobble.wobblebounty.gui.ManagedGui;
 import me.wobble.wobblebounty.model.Bounty;
 import me.wobble.wobblebounty.service.BountyService;
 import me.wobble.wobblebounty.util.ChatUtil;
@@ -13,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,7 +35,11 @@ public final class BountyMenuListener implements Listener {
     private final Map<UUID, Bounty> selectedBounties = new HashMap<>();
 
     private record PendingAction(ActionType type, UUID targetId, String targetName) {}
-    public enum ActionType { PLACE, SET }
+
+    public enum ActionType {
+        PLACE,
+        SET
+    }
 
     public BountyMenuListener(WobbleBounty plugin) {
         this.plugin = plugin;
@@ -52,18 +58,21 @@ public final class BountyMenuListener implements Listener {
         if (event.getRawSlot() >= event.getView().getTopInventory().getSize()) {
             return;
         }
-        if (event.getView().title() == null) {
+
+        ManagedGui.Type guiType = ManagedGui.getType(event.getView());
+        if (guiType == null) {
             return;
         }
 
-        if (event.getView().title().equals(ChatUtil.mm(plugin.getConfig().getString("gui.title", "<dark_gray>ʙᴏᴜɴᴛʏ")))) {
-            handleMainMenu(event, player);
-            return;
+        switch (guiType) {
+            case BOUNTY_MAIN -> handleMainMenu(event, player);
+            case BOUNTY_CONFIRM -> handleConfirmMenu(event, player);
         }
+    }
 
-        if (event.getView().title().equals(ChatUtil.mm("<dark_gray>ʙᴏᴜɴᴛʏ ᴄᴏɴꜰɪʀᴍ"))) {
-            handleConfirmMenu(event, player);
-        }
+    @EventHandler
+    public void onQuit(PlayerQuitEvent event) {
+        clearState(event.getPlayer().getUniqueId());
     }
 
     private void handleMainMenu(InventoryClickEvent event, Player player) {
@@ -183,7 +192,7 @@ public final class BountyMenuListener implements Listener {
             }
 
             Bounty value = bounty.get();
-            player.sendMessage(ChatUtil.mm("<dark_gray>— <gold>Bounty Info</gold> <dark_gray>—"));
+            player.sendMessage(ChatUtil.mm("<dark_gray>- <gold>Bounty Info</gold> <dark_gray>-"));
             player.sendMessage(ChatUtil.mm("<gray>Target:</gray> <yellow>" + targetName + "</yellow>"));
             player.sendMessage(ChatUtil.mm("<gray>Amount:</gray> <gold>" + plugin.getBountyService().format(value.getAmount()) + "</gold>"));
             player.sendMessage(ChatUtil.mm("<gray>Created:</gray> <yellow>" + value.getCreatedAt() + "</yellow>"));
@@ -200,7 +209,13 @@ public final class BountyMenuListener implements Listener {
             return;
         }
 
-        if (slot == BountyConfirmGUI.SET_SLOT && player.hasPermission("wobble.bounty.admin")) {
+        if (slot == BountyConfirmGUI.SET_SLOT) {
+            if (!player.hasPermission("wobble.bounty.admin")) {
+                player.sendMessage(ChatUtil.message(plugin, "no-permission"));
+                SoundUtil.playError(plugin, player);
+                return;
+            }
+
             pendingActions.put(playerId, new PendingAction(ActionType.SET, selected.getTargetId(), targetName));
             player.closeInventory();
             player.sendMessage(ChatUtil.mm("<gray>Enter new bounty amount for <yellow>" + targetName + "</yellow> in chat.</gray>"));
@@ -209,7 +224,13 @@ public final class BountyMenuListener implements Listener {
             return;
         }
 
-        if (slot == BountyConfirmGUI.REMOVE_SLOT && player.hasPermission("wobble.bounty.admin")) {
+        if (slot == BountyConfirmGUI.REMOVE_SLOT) {
+            if (!player.hasPermission("wobble.bounty.admin")) {
+                player.sendMessage(ChatUtil.message(plugin, "no-permission"));
+                SoundUtil.playError(plugin, player);
+                return;
+            }
+
             BountyService.RemoveResult result = plugin.getBountyService().removeBounty(selected.getTargetId());
             switch (result) {
                 case SUCCESS -> {
@@ -226,7 +247,10 @@ public final class BountyMenuListener implements Listener {
             BountyService.SortType sortType = sortTypes.getOrDefault(playerId, BountyService.SortType.HIGHEST);
             String searchQuery = searchQueries.get(playerId);
             bountyGUI.open(player, page, sortType, searchQuery);
+            return;
         }
+
+        SoundUtil.playError(plugin, player);
     }
 
     public boolean isAwaitingSearch(UUID playerId) {
@@ -235,6 +259,15 @@ public final class BountyMenuListener implements Listener {
 
     public void cancelAwaitingSearch(UUID playerId) {
         awaitingSearch.remove(playerId);
+    }
+
+    public void clearState(UUID playerId) {
+        pages.remove(playerId);
+        sortTypes.remove(playerId);
+        searchQueries.remove(playerId);
+        awaitingSearch.remove(playerId);
+        pendingActions.remove(playerId);
+        selectedBounties.remove(playerId);
     }
 
     public void applySearch(Player player, String query) {
@@ -259,6 +292,11 @@ public final class BountyMenuListener implements Listener {
     }
 
     public void cancelPendingAmountInput(UUID playerId) {
+        pendingActions.remove(playerId);
+    }
+
+    public void cancelChatInput(UUID playerId) {
+        awaitingSearch.remove(playerId);
         pendingActions.remove(playerId);
     }
 

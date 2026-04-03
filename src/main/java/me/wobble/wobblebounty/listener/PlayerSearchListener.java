@@ -35,10 +35,9 @@ public final class PlayerSearchListener implements Listener {
 
         Bukkit.getScheduler().runTask(plugin, () -> {
             if (input.equalsIgnoreCase("cancel")) {
-                bountyMenuListener.cancelAwaitingSearch(player.getUniqueId());
-                bountyMenuListener.cancelPendingAmountInput(player.getUniqueId());
+                bountyMenuListener.cancelChatInput(player.getUniqueId());
                 SoundUtil.playClick(plugin, player);
-                player.sendMessage(ChatUtil.mm("<gray>Action cancelled.</gray>"));
+                player.sendMessage(ChatUtil.message(plugin, "action-cancelled"));
                 return;
             }
 

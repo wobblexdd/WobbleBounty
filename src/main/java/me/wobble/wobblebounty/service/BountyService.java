@@ -6,6 +6,7 @@ import me.wobble.wobblebounty.model.Bounty;
 import me.wobble.wobblebounty.repository.BountyRepository;
 import me.wobble.wobblebounty.util.NumberFormatUtil;
 import net.milkbowl.vault.economy.EconomyResponse;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
@@ -169,7 +170,9 @@ public final class BountyService {
                 .filter(value -> value > 0L)
                 .orElse(System.currentTimeMillis());
 
-        repository.saveOrUpdate(new Bounty(targetId, "Unknown", amount, createdAt));
+        OfflinePlayer target = Bukkit.getOfflinePlayer(targetId);
+        String targetName = target.getName() == null || target.getName().isBlank() ? "Unknown" : target.getName();
+        repository.saveOrUpdate(new Bounty(targetId, targetName, amount, createdAt));
         return SetResult.SUCCESS;
     }
 
