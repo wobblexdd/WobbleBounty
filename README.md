@@ -61,7 +61,7 @@ WobbleBounty delivers a complete PvP bounty experience with a polished GUI, adva
 - Small caps styled interface
 - Clean layout and spacing
 - Hover hints and structured lore
-- Consistent visual system (aligned with WobbleAuction)
+- Consistent visual system across WobbleBounty
 
 ---
 
@@ -195,7 +195,7 @@ sounds:
 * MongoDB support
 * Cross-server sync
 * Public API for integrations
-* Full integration with WobbleAuction ecosystem
+* Public API integration support (planned)
 
 ---
 
