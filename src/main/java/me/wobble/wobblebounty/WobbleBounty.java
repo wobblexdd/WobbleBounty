@@ -63,7 +63,7 @@ public final class WobbleBounty extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerSearchListener(this, bountyMenuListener), this);
         getServer().getPluginManager().registerEvents(new InventorySafetyListener(), this);
 
-        getLogger().info("WobbleBounty enabled.");
+        getLogger().info("WBountyHunters enabled.");
     }
 
     @Override
@@ -71,7 +71,7 @@ public final class WobbleBounty extends JavaPlugin {
         if (sqliteManager != null) {
             sqliteManager.close();
         }
-        getLogger().info("WobbleBounty disabled.");
+        getLogger().info("WBountyHunters disabled.");
     }
 
     public void reloadPlugin() {

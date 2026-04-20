@@ -1,4 +1,4 @@
-# ⚔️ WobbleBounty
+# ⚔️ WBountyHunters
 
 ![Java](https://img.shields.io/badge/Java-21-ED8B00?style=for-the-badge&logo=java&logoColor=white)
 ![Paper](https://img.shields.io/badge/Paper-1.21-F6F6F6?style=for-the-badge)
@@ -7,7 +7,7 @@
 
 A production-ready **bounty system plugin** for Minecraft servers running **Paper 1.21+**.
 
-WobbleBounty delivers a complete PvP bounty experience with a polished GUI, advanced filtering, admin tools, and a reliable SQLite backend.
+WBountyHunters delivers a complete PvP bounty experience with a polished GUI, advanced filtering, admin tools, and a reliable SQLite backend.
 
 ---
 
@@ -61,7 +61,7 @@ WobbleBounty delivers a complete PvP bounty experience with a polished GUI, adva
 - Small caps styled interface
 - Clean layout and spacing
 - Hover hints and structured lore
-- Consistent visual system across WobbleBounty
+- Consistent visual system across WBountyHunters
 
 ---
 

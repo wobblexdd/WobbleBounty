@@ -233,7 +233,7 @@ public final class BountyGUI {
 
         inventory.setItem(infoSlot, simpleItem(
                 Material.BOOK,
-                "<gold>" + TextStyleUtil.smallCaps("WobbleBounty"),
+                "<gold>" + TextStyleUtil.smallCaps("WBountyHunters"),
                 List.of(
                         ChatUtil.mm("<gray>Page:</gray> <yellow>" + page + "</yellow><gray>/</gray><yellow>" + maxPage + "</yellow>"),
                         ChatUtil.mm("<gray>Total entries:</gray> <gold>" + totalEntries + "</gold>"),

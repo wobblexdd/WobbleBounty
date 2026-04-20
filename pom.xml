@@ -4,11 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>me.wobble</groupId>
-    <artifactId>WobbleBounty</artifactId>
+    <artifactId>WBountyHunters</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
-    <name>WobbleBounty</name>
+    <name>WBountyHunters</name>
     <description>Modern bounty plugin for Paper 1.21+</description>
 
     <properties>
@@ -51,7 +51,7 @@
     </dependencies>
 
     <build>
-        <finalName>WobbleBounty-1.0.0</finalName>
+        <finalName>WBountyHunters-1.0.0</finalName>
 
         <plugins>
             <plugin>

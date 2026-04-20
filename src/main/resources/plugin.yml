@@ -1,4 +1,4 @@
-name: WobbleBounty
+name: WBountyHunters
 version: 1.0.0
 main: me.wobble.wobblebounty.WobbleBounty
 api-version: '1.21'
