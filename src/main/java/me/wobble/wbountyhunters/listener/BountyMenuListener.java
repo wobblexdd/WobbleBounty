@@ -1,13 +1,13 @@
-package me.wobble.wobblebounty.listener;
+package me.wobble.wbountyhunters.listener;
 
-import me.wobble.wobblebounty.WobbleBounty;
-import me.wobble.wobblebounty.gui.BountyConfirmGUI;
-import me.wobble.wobblebounty.gui.BountyGUI;
-import me.wobble.wobblebounty.gui.ManagedGui;
-import me.wobble.wobblebounty.model.Bounty;
-import me.wobble.wobblebounty.service.BountyService;
-import me.wobble.wobblebounty.util.ChatUtil;
-import me.wobble.wobblebounty.util.SoundUtil;
+import me.wobble.wbountyhunters.WBountyHunters;
+import me.wobble.wbountyhunters.gui.BountyConfirmGUI;
+import me.wobble.wbountyhunters.gui.BountyGUI;
+import me.wobble.wbountyhunters.gui.ManagedGui;
+import me.wobble.wbountyhunters.model.Bounty;
+import me.wobble.wbountyhunters.service.BountyService;
+import me.wobble.wbountyhunters.util.ChatUtil;
+import me.wobble.wbountyhunters.util.SoundUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -23,7 +23,7 @@ import java.util.UUID;
 
 public final class BountyMenuListener implements Listener {
 
-    private final WobbleBounty plugin;
+    private final WBountyHunters plugin;
     private final BountyGUI bountyGUI;
     private final BountyConfirmGUI confirmGUI;
 
@@ -41,7 +41,7 @@ public final class BountyMenuListener implements Listener {
         SET
     }
 
-    public BountyMenuListener(WobbleBounty plugin) {
+    public BountyMenuListener(WBountyHunters plugin) {
         this.plugin = plugin;
         this.bountyGUI = new BountyGUI(plugin, plugin.getBountyService());
         this.confirmGUI = new BountyConfirmGUI(plugin);

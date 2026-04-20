@@ -1,9 +1,9 @@
-package me.wobble.wobblebounty.gui;
+package me.wobble.wbountyhunters.gui;
 
-import me.wobble.wobblebounty.WobbleBounty;
-import me.wobble.wobblebounty.model.Bounty;
-import me.wobble.wobblebounty.util.ChatUtil;
-import me.wobble.wobblebounty.util.TextStyleUtil;
+import me.wobble.wbountyhunters.WBountyHunters;
+import me.wobble.wbountyhunters.model.Bounty;
+import me.wobble.wbountyhunters.util.ChatUtil;
+import me.wobble.wbountyhunters.util.TextStyleUtil;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -26,9 +26,9 @@ public final class BountyConfirmGUI {
     public static final int SET_SLOT = 33;
     public static final int REMOVE_SLOT = 35;
 
-    private final WobbleBounty plugin;
+    private final WBountyHunters plugin;
 
-    public BountyConfirmGUI(WobbleBounty plugin) {
+    public BountyConfirmGUI(WBountyHunters plugin) {
         this.plugin = plugin;
     }
 

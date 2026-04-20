@@ -1,4 +1,4 @@
-package me.wobble.wobblebounty.gui;
+package me.wobble.wbountyhunters.gui;
 
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;

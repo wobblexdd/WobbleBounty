@@ -1,6 +1,6 @@
-package me.wobble.wobblebounty.listener;
+package me.wobble.wbountyhunters.listener;
 
-import me.wobble.wobblebounty.gui.ManagedGui;
+import me.wobble.wbountyhunters.gui.ManagedGui;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
