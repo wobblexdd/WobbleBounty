@@ -1,10 +1,10 @@
-package me.wobble.wbountyhunters.service;
+package me.klouse.kbountyhunters.service;
 
-import me.wobble.wbountyhunters.WBountyHunters;
-import me.wobble.wbountyhunters.economy.EconomyProvider;
-import me.wobble.wbountyhunters.model.Bounty;
-import me.wobble.wbountyhunters.repository.BountyRepository;
-import me.wobble.wbountyhunters.util.NumberFormatUtil;
+import me.klouse.kbountyhunters.KBountyHunters;
+import me.klouse.kbountyhunters.economy.EconomyProvider;
+import me.klouse.kbountyhunters.model.Bounty;
+import me.klouse.kbountyhunters.repository.BountyRepository;
+import me.klouse.kbountyhunters.util.NumberFormatUtil;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -42,11 +42,11 @@ public final class BountyService {
         INVALID_AMOUNT
     }
 
-    private final WBountyHunters plugin;
+    private final KBountyHunters plugin;
     private final EconomyProvider economyProvider;
     private final BountyRepository repository;
 
-    public BountyService(WBountyHunters plugin, EconomyProvider economyProvider, BountyRepository repository) {
+    public BountyService(KBountyHunters plugin, EconomyProvider economyProvider, BountyRepository repository) {
         this.plugin = plugin;
         this.economyProvider = economyProvider;
         this.repository = repository;

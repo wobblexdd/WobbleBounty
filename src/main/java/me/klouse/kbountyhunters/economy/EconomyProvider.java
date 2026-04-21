@@ -1,4 +1,4 @@
-package me.wobble.wbountyhunters.economy;
+package me.klouse.kbountyhunters.economy;
 
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;

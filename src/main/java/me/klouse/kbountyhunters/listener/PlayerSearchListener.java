@@ -1,9 +1,9 @@
-package me.wobble.wbountyhunters.listener;
+package me.klouse.kbountyhunters.listener;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
-import me.wobble.wbountyhunters.WBountyHunters;
-import me.wobble.wbountyhunters.util.ChatUtil;
-import me.wobble.wbountyhunters.util.SoundUtil;
+import me.klouse.kbountyhunters.KBountyHunters;
+import me.klouse.kbountyhunters.util.ChatUtil;
+import me.klouse.kbountyhunters.util.SoundUtil;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -12,10 +12,10 @@ import org.bukkit.event.Listener;
 
 public final class PlayerSearchListener implements Listener {
 
-    private final WBountyHunters plugin;
+    private final KBountyHunters plugin;
     private final BountyMenuListener bountyMenuListener;
 
-    public PlayerSearchListener(WBountyHunters plugin, BountyMenuListener bountyMenuListener) {
+    public PlayerSearchListener(KBountyHunters plugin, BountyMenuListener bountyMenuListener) {
         this.plugin = plugin;
         this.bountyMenuListener = bountyMenuListener;
     }

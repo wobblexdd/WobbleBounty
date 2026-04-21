@@ -1,13 +1,13 @@
-package me.wobble.wbountyhunters.listener;
+package me.klouse.kbountyhunters.listener;
 
-import me.wobble.wbountyhunters.WBountyHunters;
-import me.wobble.wbountyhunters.gui.BountyConfirmGUI;
-import me.wobble.wbountyhunters.gui.BountyGUI;
-import me.wobble.wbountyhunters.gui.ManagedGui;
-import me.wobble.wbountyhunters.model.Bounty;
-import me.wobble.wbountyhunters.service.BountyService;
-import me.wobble.wbountyhunters.util.ChatUtil;
-import me.wobble.wbountyhunters.util.SoundUtil;
+import me.klouse.kbountyhunters.KBountyHunters;
+import me.klouse.kbountyhunters.gui.BountyConfirmGUI;
+import me.klouse.kbountyhunters.gui.BountyGUI;
+import me.klouse.kbountyhunters.gui.ManagedGui;
+import me.klouse.kbountyhunters.model.Bounty;
+import me.klouse.kbountyhunters.service.BountyService;
+import me.klouse.kbountyhunters.util.ChatUtil;
+import me.klouse.kbountyhunters.util.SoundUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -23,7 +23,7 @@ import java.util.UUID;
 
 public final class BountyMenuListener implements Listener {
 
-    private final WBountyHunters plugin;
+    private final KBountyHunters plugin;
     private final BountyGUI bountyGUI;
     private final BountyConfirmGUI confirmGUI;
 
@@ -41,7 +41,7 @@ public final class BountyMenuListener implements Listener {
         SET
     }
 
-    public BountyMenuListener(WBountyHunters plugin) {
+    public BountyMenuListener(KBountyHunters plugin) {
         this.plugin = plugin;
         this.bountyGUI = new BountyGUI(plugin, plugin.getBountyService());
         this.confirmGUI = new BountyConfirmGUI(plugin);
@@ -210,7 +210,7 @@ public final class BountyMenuListener implements Listener {
         }
 
         if (slot == BountyConfirmGUI.SET_SLOT) {
-            if (!player.hasPermission("wobble.bounty.admin")) {
+            if (!player.hasPermission("klouse.bounty.admin")) {
                 player.sendMessage(ChatUtil.message(plugin, "no-permission"));
                 SoundUtil.playError(plugin, player);
                 return;
@@ -225,7 +225,7 @@ public final class BountyMenuListener implements Listener {
         }
 
         if (slot == BountyConfirmGUI.REMOVE_SLOT) {
-            if (!player.hasPermission("wobble.bounty.admin")) {
+            if (!player.hasPermission("klouse.bounty.admin")) {
                 player.sendMessage(ChatUtil.message(plugin, "no-permission"));
                 SoundUtil.playError(plugin, player);
                 return;
@@ -352,7 +352,7 @@ public final class BountyMenuListener implements Listener {
                 }
             }
         } else {
-            if (!player.hasPermission("wobble.bounty.admin")) {
+            if (!player.hasPermission("klouse.bounty.admin")) {
                 player.sendMessage(ChatUtil.message(plugin, "no-permission"));
                 SoundUtil.playError(plugin, player);
                 return;

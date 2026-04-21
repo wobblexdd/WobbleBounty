@@ -1,4 +1,4 @@
-package me.wobble.wbountyhunters.model;
+package me.klouse.kbountyhunters.model;
 
 import java.util.UUID;
 

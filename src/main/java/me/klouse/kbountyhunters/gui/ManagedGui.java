@@ -1,4 +1,4 @@
-package me.wobble.wbountyhunters.gui;
+package me.klouse.kbountyhunters.gui;
 
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;

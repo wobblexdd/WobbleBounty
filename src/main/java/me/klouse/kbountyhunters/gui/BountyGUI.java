@@ -1,10 +1,10 @@
-package me.wobble.wbountyhunters.gui;
+package me.klouse.kbountyhunters.gui;
 
-import me.wobble.wbountyhunters.WBountyHunters;
-import me.wobble.wbountyhunters.model.Bounty;
-import me.wobble.wbountyhunters.service.BountyService;
-import me.wobble.wbountyhunters.util.ChatUtil;
-import me.wobble.wbountyhunters.util.TextStyleUtil;
+import me.klouse.kbountyhunters.KBountyHunters;
+import me.klouse.kbountyhunters.model.Bounty;
+import me.klouse.kbountyhunters.service.BountyService;
+import me.klouse.kbountyhunters.util.ChatUtil;
+import me.klouse.kbountyhunters.util.TextStyleUtil;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -34,11 +34,11 @@ public final class BountyGUI {
     public static final int SEARCH_SLOT = 48;
     public static final int RESET_SLOT = 51;
 
-    private final WBountyHunters plugin;
+    private final KBountyHunters plugin;
     private final BountyService bountyService;
     private final Pagination<Bounty> pagination;
 
-    public BountyGUI(WBountyHunters plugin, BountyService bountyService) {
+    public BountyGUI(KBountyHunters plugin, BountyService bountyService) {
         this.plugin = plugin;
         this.bountyService = bountyService;
         this.pagination = new Pagination<>();
@@ -233,7 +233,7 @@ public final class BountyGUI {
 
         inventory.setItem(infoSlot, simpleItem(
                 Material.BOOK,
-                "<gold>" + TextStyleUtil.smallCaps("WBountyHunters"),
+                "<gold>" + TextStyleUtil.smallCaps("KBountyHunters"),
                 List.of(
                         ChatUtil.mm("<gray>Page:</gray> <yellow>" + page + "</yellow><gray>/</gray><yellow>" + maxPage + "</yellow>"),
                         ChatUtil.mm("<gray>Total entries:</gray> <gold>" + totalEntries + "</gold>"),

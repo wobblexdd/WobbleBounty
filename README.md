@@ -1,4 +1,4 @@
-# ⚔️ WBountyHunters
+# ⚔️ KBountyHunters
 
 ![Java](https://img.shields.io/badge/Java-21-ED8B00?style=for-the-badge&logo=java&logoColor=white)
 ![Paper](https://img.shields.io/badge/Paper-1.21-F6F6F6?style=for-the-badge)
@@ -7,7 +7,7 @@
 
 A production-ready **bounty system plugin** for Minecraft servers running **Paper 1.21+**.
 
-WBountyHunters delivers a complete PvP bounty experience with a polished GUI, advanced filtering, admin tools, and a reliable SQLite backend.
+KBountyHunters delivers a complete PvP bounty experience with a polished GUI, advanced filtering, admin tools, and a reliable SQLite backend.
 
 ---
 
@@ -61,7 +61,7 @@ WBountyHunters delivers a complete PvP bounty experience with a polished GUI, ad
 - Small caps styled interface
 - Clean layout and spacing
 - Hover hints and structured lore
-- Consistent visual system across WBountyHunters
+- Consistent visual system across KBountyHunters
 
 ---
 
@@ -122,8 +122,8 @@ WBountyHunters delivers a complete PvP bounty experience with a polished GUI, ad
 
 | Permission | Description |
 |-----------|------------|
-| `wobble.bounty.admin` | Full admin access |
-| `wobble.bounty.reload` | Reload plugin |
+| `klouse.bounty.admin` | Full admin access |
+| `klouse.bounty.reload` | Reload plugin |
 
 ---
 
@@ -201,5 +201,5 @@ sounds:
 
 ## 👨‍💻 Author
 
-**Wobble**
-GitHub: https://github.com/wobblexdd
+**Klouse**
+GitHub: https://github.com/klousex

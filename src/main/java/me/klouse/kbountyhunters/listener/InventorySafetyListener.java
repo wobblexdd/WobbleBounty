@@ -1,6 +1,6 @@
-package me.wobble.wbountyhunters.listener;
+package me.klouse.kbountyhunters.listener;
 
-import me.wobble.wbountyhunters.gui.ManagedGui;
+import me.klouse.kbountyhunters.gui.ManagedGui;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;

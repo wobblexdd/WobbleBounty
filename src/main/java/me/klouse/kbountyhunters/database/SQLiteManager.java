@@ -1,6 +1,6 @@
-package me.wobble.wbountyhunters.database;
+package me.klouse.kbountyhunters.database;
 
-import me.wobble.wbountyhunters.WBountyHunters;
+import me.klouse.kbountyhunters.KBountyHunters;
 
 import java.io.File;
 import java.sql.Connection;
@@ -10,10 +10,10 @@ import java.sql.Statement;
 
 public final class SQLiteManager {
 
-    private final WBountyHunters plugin;
+    private final KBountyHunters plugin;
     private Connection connection;
 
-    public SQLiteManager(WBountyHunters plugin) {
+    public SQLiteManager(KBountyHunters plugin) {
         this.plugin = plugin;
     }
 

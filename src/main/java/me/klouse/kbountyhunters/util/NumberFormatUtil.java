@@ -1,4 +1,4 @@
-package me.wobble.wbountyhunters.util;
+package me.klouse.kbountyhunters.util;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;

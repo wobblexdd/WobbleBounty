@@ -1,4 +1,4 @@
-package me.wobble.wbountyhunters.util;
+package me.klouse.kbountyhunters.util;
 
 import java.util.HashMap;
 import java.util.Map;

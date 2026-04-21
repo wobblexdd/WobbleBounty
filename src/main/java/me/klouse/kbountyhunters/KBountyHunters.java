@@ -1,14 +1,14 @@
-package me.wobble.wbountyhunters;
+package me.klouse.kbountyhunters;
 
-import me.wobble.wbountyhunters.command.BountyCommand;
-import me.wobble.wbountyhunters.database.SQLiteManager;
-import me.wobble.wbountyhunters.economy.EconomyProvider;
-import me.wobble.wbountyhunters.listener.BountyMenuListener;
-import me.wobble.wbountyhunters.listener.InventorySafetyListener;
-import me.wobble.wbountyhunters.listener.PlayerKillListener;
-import me.wobble.wbountyhunters.listener.PlayerSearchListener;
-import me.wobble.wbountyhunters.repository.BountyRepository;
-import me.wobble.wbountyhunters.service.BountyService;
+import me.klouse.kbountyhunters.command.BountyCommand;
+import me.klouse.kbountyhunters.database.SQLiteManager;
+import me.klouse.kbountyhunters.economy.EconomyProvider;
+import me.klouse.kbountyhunters.listener.BountyMenuListener;
+import me.klouse.kbountyhunters.listener.InventorySafetyListener;
+import me.klouse.kbountyhunters.listener.PlayerKillListener;
+import me.klouse.kbountyhunters.listener.PlayerSearchListener;
+import me.klouse.kbountyhunters.repository.BountyRepository;
+import me.klouse.kbountyhunters.service.BountyService;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.logging.Level;
 
-public final class WBountyHunters extends JavaPlugin {
+public final class KBountyHunters extends JavaPlugin {
 
     private FileConfiguration messagesConfig;
     private File messagesFile;
@@ -63,7 +63,7 @@ public final class WBountyHunters extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerSearchListener(this, bountyMenuListener), this);
         getServer().getPluginManager().registerEvents(new InventorySafetyListener(), this);
 
-        getLogger().info("WBountyHunters enabled.");
+        getLogger().info("KBountyHunters enabled.");
     }
 
     @Override
@@ -71,7 +71,7 @@ public final class WBountyHunters extends JavaPlugin {
         if (sqliteManager != null) {
             sqliteManager.close();
         }
-        getLogger().info("WBountyHunters disabled.");
+        getLogger().info("KBountyHunters disabled.");
     }
 
     public void reloadPlugin() {

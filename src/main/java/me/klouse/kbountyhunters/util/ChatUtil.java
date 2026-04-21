@@ -1,6 +1,6 @@
-package me.wobble.wbountyhunters.util;
+package me.klouse.kbountyhunters.util;
 
-import me.wobble.wbountyhunters.WBountyHunters;
+import me.klouse.kbountyhunters.KBountyHunters;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 
@@ -15,17 +15,17 @@ public final class ChatUtil {
         return MINI_MESSAGE.deserialize(text == null ? "" : text);
     }
 
-    public static String raw(WBountyHunters plugin, String path) {
+    public static String raw(KBountyHunters plugin, String path) {
         return plugin.getMessagesConfig().getString(path, "");
     }
 
-    public static Component message(WBountyHunters plugin, String path) {
+    public static Component message(KBountyHunters plugin, String path) {
         String prefix = plugin.getMessagesConfig().getString("prefix", "");
         String text = plugin.getMessagesConfig().getString(path, "");
         return mm(prefix + text);
     }
 
-    public static Component message(WBountyHunters plugin, String path, String... replacements) {
+    public static Component message(KBountyHunters plugin, String path, String... replacements) {
         String prefix = plugin.getMessagesConfig().getString("prefix", "");
         String text = plugin.getMessagesConfig().getString(path, "");
 

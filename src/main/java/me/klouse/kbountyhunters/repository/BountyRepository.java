@@ -1,7 +1,7 @@
-package me.wobble.wbountyhunters.repository;
+package me.klouse.kbountyhunters.repository;
 
-import me.wobble.wbountyhunters.database.SQLiteManager;
-import me.wobble.wbountyhunters.model.Bounty;
+import me.klouse.kbountyhunters.database.SQLiteManager;
+import me.klouse.kbountyhunters.model.Bounty;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

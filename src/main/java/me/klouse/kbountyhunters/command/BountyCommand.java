@@ -1,11 +1,11 @@
-package me.wobble.wbountyhunters.command;
+package me.klouse.kbountyhunters.command;
 
-import me.wobble.wbountyhunters.WBountyHunters;
-import me.wobble.wbountyhunters.gui.BountyGUI;
-import me.wobble.wbountyhunters.model.Bounty;
-import me.wobble.wbountyhunters.service.BountyService;
-import me.wobble.wbountyhunters.util.ChatUtil;
-import me.wobble.wbountyhunters.util.SoundUtil;
+import me.klouse.kbountyhunters.KBountyHunters;
+import me.klouse.kbountyhunters.gui.BountyGUI;
+import me.klouse.kbountyhunters.model.Bounty;
+import me.klouse.kbountyhunters.service.BountyService;
+import me.klouse.kbountyhunters.util.ChatUtil;
+import me.klouse.kbountyhunters.util.SoundUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -20,11 +20,11 @@ import java.util.Optional;
 
 public final class BountyCommand implements CommandExecutor, TabCompleter {
 
-    private final WBountyHunters plugin;
+    private final KBountyHunters plugin;
     private final BountyService bountyService;
     private final BountyGUI bountyGUI;
 
-    public BountyCommand(WBountyHunters plugin, BountyService bountyService) {
+    public BountyCommand(KBountyHunters plugin, BountyService bountyService) {
         this.plugin = plugin;
         this.bountyService = bountyService;
         this.bountyGUI = new BountyGUI(plugin, bountyService);
@@ -191,7 +191,7 @@ public final class BountyCommand implements CommandExecutor, TabCompleter {
     }
 
     private void handleReload(Player player) {
-        if (!player.hasPermission("wobble.bounty.reload")) {
+        if (!player.hasPermission("klouse.bounty.reload")) {
             player.sendMessage(ChatUtil.message(plugin, "no-permission"));
             SoundUtil.playError(plugin, player);
             return;
@@ -203,7 +203,7 @@ public final class BountyCommand implements CommandExecutor, TabCompleter {
     }
 
     private void handleRemove(Player player, String[] args) {
-        if (!player.hasPermission("wobble.bounty.admin")) {
+        if (!player.hasPermission("klouse.bounty.admin")) {
             player.sendMessage(ChatUtil.message(plugin, "no-permission"));
             SoundUtil.playError(plugin, player);
             return;
@@ -237,7 +237,7 @@ public final class BountyCommand implements CommandExecutor, TabCompleter {
     }
 
     private void handleSet(Player player, String[] args) {
-        if (!player.hasPermission("wobble.bounty.admin")) {
+        if (!player.hasPermission("klouse.bounty.admin")) {
             player.sendMessage(ChatUtil.message(plugin, "no-permission"));
             SoundUtil.playError(plugin, player);
             return;
@@ -280,7 +280,7 @@ public final class BountyCommand implements CommandExecutor, TabCompleter {
     }
 
     private void handleInfo(Player player, String[] args) {
-        if (!player.hasPermission("wobble.bounty.admin")) {
+        if (!player.hasPermission("klouse.bounty.admin")) {
             player.sendMessage(ChatUtil.message(plugin, "no-permission"));
             SoundUtil.playError(plugin, player);
             return;
@@ -315,7 +315,7 @@ public final class BountyCommand implements CommandExecutor, TabCompleter {
     }
 
     private void handleClearAll(Player player) {
-        if (!player.hasPermission("wobble.bounty.admin")) {
+        if (!player.hasPermission("klouse.bounty.admin")) {
             player.sendMessage(ChatUtil.message(plugin, "no-permission"));
             SoundUtil.playError(plugin, player);
             return;

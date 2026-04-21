@@ -1,4 +1,4 @@
-package me.wobble.wbountyhunters.gui;
+package me.klouse.kbountyhunters.gui;
 
 import java.util.Collections;
 import java.util.List;

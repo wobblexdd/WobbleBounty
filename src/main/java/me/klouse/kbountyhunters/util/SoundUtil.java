@@ -1,6 +1,6 @@
-package me.wobble.wbountyhunters.util;
+package me.klouse.kbountyhunters.util;
 
-import me.wobble.wbountyhunters.WBountyHunters;
+import me.klouse.kbountyhunters.KBountyHunters;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
@@ -9,19 +9,19 @@ public final class SoundUtil {
     private SoundUtil() {
     }
 
-    public static void playSuccess(WBountyHunters plugin, Player player) {
+    public static void playSuccess(KBountyHunters plugin, Player player) {
         play(plugin, player, "sounds.success", Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f);
     }
 
-    public static void playError(WBountyHunters plugin, Player player) {
+    public static void playError(KBountyHunters plugin, Player player) {
         play(plugin, player, "sounds.error", Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
     }
 
-    public static void playClick(WBountyHunters plugin, Player player) {
+    public static void playClick(KBountyHunters plugin, Player player) {
         play(plugin, player, "sounds.click", Sound.UI_BUTTON_CLICK, 1.0f, 1.0f);
     }
 
-    private static void play(WBountyHunters plugin, Player player, String path, Sound fallback, float volume, float pitch) {
+    private static void play(KBountyHunters plugin, Player player, String path, Sound fallback, float volume, float pitch) {
         if (!plugin.getConfig().getBoolean("sounds.enabled", true)) {
             return;
         }

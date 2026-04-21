@@ -1,9 +1,9 @@
-package me.wobble.wbountyhunters.gui;
+package me.klouse.kbountyhunters.gui;
 
-import me.wobble.wbountyhunters.WBountyHunters;
-import me.wobble.wbountyhunters.model.Bounty;
-import me.wobble.wbountyhunters.util.ChatUtil;
-import me.wobble.wbountyhunters.util.TextStyleUtil;
+import me.klouse.kbountyhunters.KBountyHunters;
+import me.klouse.kbountyhunters.model.Bounty;
+import me.klouse.kbountyhunters.util.ChatUtil;
+import me.klouse.kbountyhunters.util.TextStyleUtil;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -26,9 +26,9 @@ public final class BountyConfirmGUI {
     public static final int SET_SLOT = 33;
     public static final int REMOVE_SLOT = 35;
 
-    private final WBountyHunters plugin;
+    private final KBountyHunters plugin;
 
-    public BountyConfirmGUI(WBountyHunters plugin) {
+    public BountyConfirmGUI(KBountyHunters plugin) {
         this.plugin = plugin;
     }
 
@@ -89,7 +89,7 @@ public final class BountyConfirmGUI {
                 )
         ));
 
-        if (player.hasPermission("wobble.bounty.admin")) {
+        if (player.hasPermission("klouse.bounty.admin")) {
             inventory.setItem(SET_SLOT, simpleItem(
                     Material.ANVIL,
                     "<gold>" + TextStyleUtil.smallCaps("Set Bounty"),

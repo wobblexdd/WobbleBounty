@@ -1,8 +1,8 @@
-package me.wobble.wbountyhunters.listener;
+package me.klouse.kbountyhunters.listener;
 
-import me.wobble.wbountyhunters.WBountyHunters;
-import me.wobble.wbountyhunters.service.BountyService;
-import me.wobble.wbountyhunters.util.ChatUtil;
+import me.klouse.kbountyhunters.KBountyHunters;
+import me.klouse.kbountyhunters.service.BountyService;
+import me.klouse.kbountyhunters.util.ChatUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,11 +15,11 @@ import java.util.UUID;
 
 public final class PlayerKillListener implements Listener {
 
-    private final WBountyHunters plugin;
+    private final KBountyHunters plugin;
     private final BountyService bountyService;
     private final Map<String, Long> antiFarm = new HashMap<>();
 
-    public PlayerKillListener(WBountyHunters plugin, BountyService bountyService) {
+    public PlayerKillListener(KBountyHunters plugin, BountyService bountyService) {
         this.plugin = plugin;
         this.bountyService = bountyService;
     }

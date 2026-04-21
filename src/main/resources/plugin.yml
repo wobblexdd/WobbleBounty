@@ -1,26 +1,26 @@
-name: WBountyHunters
+name: KBountyHunters
 version: 1.0.0
-main: me.wobble.wbountyhunters.WBountyHunters
+main: me.klouse.kbountyhunters.KBountyHunters
 api-version: '1.21'
-authors: [Wobble]
-website: https://github.com/wobblexdd
+authors: [Klouse]
+website: https://github.com/klousex
 depend: [Vault]
 
 commands:
   bounty:
     description: Main bounty command
     usage: /bounty
-    aliases: [wbounty]
+    aliases: [kbounty]
 
 permissions:
-  wobble.bounty.admin:
-    description: Full admin access to WBountyHunters
+  klouse.bounty.admin:
+    description: Full admin access to KBountyHunters
     default: op
 
-  wobble.bounty.reload:
-    description: Reload WBountyHunters configuration
+  klouse.bounty.reload:
+    description: Reload KBountyHunters configuration
     default: op
 
-  wobble.bounty.bypass:
+  klouse.bounty.bypass:
     description: Reserved bypass permission
     default: false

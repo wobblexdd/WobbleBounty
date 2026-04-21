@@ -3,12 +3,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>me.wobble</groupId>
-    <artifactId>WBountyHunters</artifactId>
+    <groupId>me.klouse</groupId>
+    <artifactId>KBountyHunters</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
-    <name>WBountyHunters</name>
+    <name>KBountyHunters</name>
     <description>Modern bounty plugin for Paper 1.21+</description>
 
     <properties>
@@ -51,7 +51,7 @@
     </dependencies>
 
     <build>
-        <finalName>WBountyHunters-1.0.0</finalName>
+        <finalName>KBountyHunters-1.0.0</finalName>
 
         <plugins>
             <plugin>
